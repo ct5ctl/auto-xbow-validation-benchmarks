@@ -12,7 +12,7 @@ WORKDIR /app
 COPY requirements.txt /app/
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
 COPY website /app/
 

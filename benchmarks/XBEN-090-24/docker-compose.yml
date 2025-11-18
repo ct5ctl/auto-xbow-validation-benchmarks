@@ -4,8 +4,8 @@ services:
       context: ./app
       dockerfile: Dockerfile
     ports:
-      - "5003:5003"
+      - "80:80"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5003"]
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
       interval: 10s
       retries: 5  

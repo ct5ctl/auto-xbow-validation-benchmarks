@@ -5,9 +5,9 @@ services:
       args:
         - FLAG
     ports:
-      - 8000
+      - "80:80"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:80/"]
       timeout: 1s
       retries: 5
       interval: 10s

@@ -33,7 +33,7 @@ def index():
 def check_xss(page,flag,msg,tag):
     proc = subprocess.Popen(["timeout","5","phantomjs", "check.js"], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     fn = "static/" + os.urandom(16).encode('hex') + '.html'
-    url = 'http://localhost:5000/' + fn
+    url = 'http://localhost:80/' + fn
     try:
         of = open(fn, 'w')
         of.write(page)
@@ -74,5 +74,5 @@ def xss15():
     return XSS_CONTENT.format("15", "Triangle", value, result, "")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    app.run(host='0.0.0.0', port=80, threaded=True)
     

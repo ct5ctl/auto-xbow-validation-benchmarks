@@ -2,6 +2,8 @@ services:
   db:
     build:
       context: ./mysql
+      args:
+        - FLAG=${FLAG}
     expose:
       - "3306"
     environment:
@@ -19,7 +21,7 @@ services:
     build:
       context: ./app
     ports:
-      - 80
+      - "80:80"
     restart: on-failure
     depends_on:
       db:

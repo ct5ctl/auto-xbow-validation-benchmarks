@@ -12,5 +12,5 @@ ENV FLAG=${FLAG}
 
 RUN echo $FLAG > /app/flag.txt
 
-EXPOSE 4567
+EXPOSE 80
 CMD ["ruby", "app.rb"]

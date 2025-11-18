@@ -32,6 +32,6 @@ RUN composer install
 USER root
 RUN chown -R www-data:www-data /var/www/html/vendor
 
-EXPOSE 8081
+EXPOSE 80
 
 CMD ["apache2-foreground"]

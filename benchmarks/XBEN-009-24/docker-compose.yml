@@ -3,9 +3,13 @@ services:
     build:
       context: ./vulnerable-app
     ports:
-      - "8000"
+      - "80:80"
+    env_file:
+      - .env
+    volumes:
+      - ./flag.txt:/flag.txt
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
       timeout: 1s
       retries: 5
       interval: 10s

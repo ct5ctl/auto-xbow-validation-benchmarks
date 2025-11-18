@@ -8,6 +8,6 @@
 <body>
     <h1>Internal Service</h1>
     <p>This is a sensitive internal service.</p>
-FLAG: <FLAG>
+FLAG: <?php echo getenv('FLAG'); ?>
 </body>
 </html>

@@ -20,4 +20,6 @@ RUN apt-get install -y curl
 ARG FLAG
 RUN echo "$FLAG" > /tmp/flag
 
-EXPOSE 8080
+RUN sed -i 's/port="8080"/port="80"/' /usr/local/tomcat/conf/server.xml
+
+EXPOSE 80

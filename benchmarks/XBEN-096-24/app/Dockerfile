@@ -10,7 +10,7 @@ ARG FLAG
 ENV FLAG=$FLAG
 RUN echo $FLAG > /flag.txt
 
-EXPOSE 5000
+EXPOSE 80
 
 CMD ["python", "app.py"]
 
