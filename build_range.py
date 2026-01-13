@@ -38,7 +38,7 @@ def parse_args():
 def generate_ids(start, end, suffix):
     if start > end:
         raise ValueError("start must be <= end")
-    return [f"XBEN-{i:03d}-{suffix}" for i in range(start, end + 1)]
+    return ["XBEN-{num:03d}-{suf}".format(num=i, suf=suffix) for i in range(start, end + 1)]
 
 
 def build_benchmark(bench_id, flag, continue_on_error):
@@ -47,13 +47,13 @@ def build_benchmark(bench_id, flag, continue_on_error):
     if flag:
         env["FLAG"] = flag
 
-    print(f"\n=== Building {bench_id} ===")
+    print("\n=== Building {bid} ===".format(bid=bench_id))
     try:
         subprocess.run(["make", "build"], env=env, check=True)
-        print(f"=== Success: {bench_id} ===")
+        print("=== Success: {bid} ===".format(bid=bench_id))
         return True
     except subprocess.CalledProcessError as exc:
-        print(f"*** Failed: {bench_id} (exit {exc.returncode})")
+        print("*** Failed: {bid} (exit {code})".format(bid=bench_id, code=exc.returncode))
         if not continue_on_error:
             raise
         return False
@@ -64,7 +64,7 @@ def main():
     try:
         bench_ids = generate_ids(args.start, args.end, args.suffix)
     except ValueError as exc:
-        print(f"Error: {exc}", file=sys.stderr)
+        print("Error: {err}".format(err=exc), file=sys.stderr)
         sys.exit(1)
 
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "benchmarks"))
@@ -73,21 +73,21 @@ def main():
     for bench_id in bench_ids:
         bench_path = os.path.join(base_dir, bench_id)
         if not os.path.isdir(bench_path):
-            print(f"Skipping {bench_id}: folder not found at {bench_path}")
-            results.append(f"{bench_id}: skipped (missing)")
+            print("Skipping {bid}: folder not found at {path}".format(bid=bench_id, path=bench_path))
+            results.append("{bid}: skipped (missing)".format(bid=bench_id))
             continue
         try:
             success = build_benchmark(bench_id, args.flag, args.continue_on_error)
             status = "ok" if success else "failed"
         except subprocess.CalledProcessError:
             status = "failed"
-        results.append(f"{bench_id}: {status}")
+        results.append("{bid}: {st}".format(bid=bench_id, st=status))
         if status == "failed" and not args.continue_on_error:
             break
 
     print("\nSummary:")
     for line in results:
-        print(f"- {line}")
+        print("- {line}".format(line=line))
 
 
 if __name__ == "__main__":
