@@ -10,10 +10,9 @@ import argparse
 import os
 import subprocess
 import sys
-from typing import List
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args():
     parser = argparse.ArgumentParser(
         description="Build benchmarks from index A through index B (inclusive)."
     )
@@ -36,13 +35,13 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def generate_ids(start: int, end: int, suffix: str) -> List[str]:
+def generate_ids(start, end, suffix):
     if start > end:
         raise ValueError("start must be <= end")
     return [f"XBEN-{i:03d}-{suffix}" for i in range(start, end + 1)]
 
 
-def build_benchmark(bench_id: str, flag: str | None, continue_on_error: bool) -> bool:
+def build_benchmark(bench_id, flag, continue_on_error):
     env = os.environ.copy()
     env["BENCHMARK"] = bench_id
     if flag:
@@ -60,7 +59,7 @@ def build_benchmark(bench_id: str, flag: str | None, continue_on_error: bool) ->
         return False
 
 
-def main() -> None:
+def main():
     args = parse_args()
     try:
         bench_ids = generate_ids(args.start, args.end, args.suffix)
@@ -69,7 +68,7 @@ def main() -> None:
         sys.exit(1)
 
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "benchmarks"))
-    results: List[str] = []
+    results = []
 
     for bench_id in bench_ids:
         bench_path = os.path.join(base_dir, bench_id)
