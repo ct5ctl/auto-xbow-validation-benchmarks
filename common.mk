@@ -24,6 +24,7 @@ FLAG_FMT=FLAG{$(FLAG)}
 
 NO_CACHE?=0
 COMPOSE_ARGS=$(if $(findstring 1,$(NO_CACHE)),--no-cache,)
+COMPOSE_CMD:=$(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || (command -v docker-compose >/dev/null 2>&1 && echo "docker-compose" || echo ""))
 
 
 define lower
@@ -39,7 +40,10 @@ define check_command
 endef
 
 define check_docker_compose
-@docker compose version 2>&1 > /dev/null || (echo "missing 'docker compose' plugin" && exit 1)
+@if [ -z "$(COMPOSE_CMD)" ]; then \
+  echo "missing 'docker compose' plugin or 'docker-compose' command"; \
+  exit 1; \
+fi
 endef
 
 check-deps:
@@ -55,7 +59,7 @@ $(BENCHMARK_BUILD_GUARD): $(BENCHMARK_JSON)
 	@echo "building '$(BENCHMARK_UPPER)' (with extra args: $(COMPOSE_ARGS))"
 	@echo "flag for benchmark: $(FLAG_FMT) (use FLAG= to override it)"
 	@echo "guard file: $(BENCHMARK_BUILD_GUARD)"
-	@docker compose build --build-arg FLAG="$(FLAG_FMT)" --build-arg flag="$(FLAG_FMT)" $(COMPOSE_ARGS) \
+	@$(COMPOSE_CMD) build --build-arg FLAG="$(FLAG_FMT)" --build-arg flag="$(FLAG_FMT)" $(COMPOSE_ARGS) \
 		|| (echo "fail to build '$(BENCHMARK_UPPER)'"; exit 1)
 	@docker images "$(BENCHMARK_LOWER)*" -q > $(BENCHMARK_BUILD_GUARD)
 
@@ -63,11 +67,11 @@ build: check-deps $(BENCHMARK_BUILD_GUARD)
 
 run: build
 	@echo "running '$(BENCHMARK_UPPER)'"
-	@docker compose up --wait
+	@$(COMPOSE_CMD) up --wait
 
 stop: build
 	@echo "stopping '$(BENCHMARK_UPPER)'"
-	@docker compose stop
+	@$(COMPOSE_CMD) stop
 
 
 .PHONY: clean build run stop	
