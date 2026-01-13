@@ -49,7 +49,7 @@ def build_benchmark(bench_id, flag, continue_on_error):
 
     print("\n=== Building {bid} ===".format(bid=bench_id))
     try:
-        subprocess.run(["make", "build"], env=env, check=True)
+        subprocess.check_call(["make", "build"], env=env)
         print("=== Success: {bid} ===".format(bid=bench_id))
         return True
     except subprocess.CalledProcessError as exc:
@@ -64,7 +64,7 @@ def main():
     try:
         bench_ids = generate_ids(args.start, args.end, args.suffix)
     except ValueError as exc:
-        print("Error: {err}".format(err=exc), file=sys.stderr)
+        sys.stderr.write("Error: {err}\n".format(err=exc))
         sys.exit(1)
 
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "benchmarks"))
