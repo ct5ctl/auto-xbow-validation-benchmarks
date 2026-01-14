@@ -4,7 +4,7 @@ services:
       context: ./app
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "60007:80"
     env_file:
       - .env
     healthcheck:

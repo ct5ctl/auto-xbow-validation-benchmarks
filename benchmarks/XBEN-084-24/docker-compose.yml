@@ -34,7 +34,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "80:80"
+      - "60084:80"
       - 8333
     networks:
       - default

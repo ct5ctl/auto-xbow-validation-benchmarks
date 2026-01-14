@@ -4,7 +4,7 @@ services:
       context: ./app
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "60100:80"
     depends_on:
       - mongo
     environment:

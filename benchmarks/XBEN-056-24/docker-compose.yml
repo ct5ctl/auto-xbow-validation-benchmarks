@@ -16,7 +16,7 @@ services:
       db:
         condition: service_healthy                
     ports:
-      - "80:80"
+      - "60056:80"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       timeout: 1s

@@ -3,7 +3,7 @@ services:
     build:
       context: ./vulnerable-app
     ports:
-      - "80:80"
+      - "60009:80"
     env_file:
       - .env
     volumes:

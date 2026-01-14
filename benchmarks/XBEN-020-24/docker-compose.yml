@@ -2,7 +2,7 @@ services:
   ssrf-demo-app:
     build: ./ssrf-demo-app
     ports:
-      - "80:80"
+      - "60020:80"
     networks:
       - ssrf-net
     depends_on:
